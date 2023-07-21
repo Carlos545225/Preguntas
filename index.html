@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biología</title>
+  <style>
+      body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f3f3f3;
+      margin: 0;
+    }
+
+    h1 {
+      margin: 20px 0;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+    }
+
+    .question {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .option {
+      margin: 10px;
+    }
+
+    .option label {
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>¿Que tanto sabes de Biologia?</h1>
+  <div class="form-container" id="form-container"></div>
+  <button class="submit-btn" id="submit-btn">Enviar respuestas</button>
+  <div class="result" id="result"></div>
+
+  <script>
+    const questions = [
+      {
+        question: '1. ¿Cuál es el proceso de fotosíntesis en las plantas?',
+        options: ['Transformación de luz en sonido', 'Conversión de dióxido de carbono en oxígeno usando luz solar', 'Reproducción asexual en plantas', 'Proceso de respiración celular'],
+        correctAnswer: 1,
+      },
+      {
+        question: '2. ¿Cuál es la función principal de las mitocondrias en las células?',
+        options: ['Síntesis de proteínas', 'Almacenamiento de agua', 'Producción de energía (ATP)', 'Captura de luz solar'],
+        correctAnswer: 2,
+      },
+      {
+        question: '3. ¿Qué sistema del cuerpo humano es responsable de la distribución de oxígeno y nutrientes a todas las células?',
+        options: ['Sistema circulatorio', 'Sistema respiratorio', 'Sistema nervioso', 'Sistema digestivo'],
+        correctAnswer: 0,
+      },
+      {
+        question: '4. ¿Cuál de las siguientes células es responsable de la producción de anticuerpos?',
+        options: ['Eritrocitos', 'Leucocitos', 'Plaquetas', 'Linfocitos'],
+        correctAnswer: 3,
+      },
+      {
+        question: '5. ¿Qué estructura celular es conocida como la "central de energía"?',
+        options: ['Lisosoma', 'Retículo endoplasmático', 'Núcleo', 'Mitocondria'],
+        correctAnswer: 3,
+      },
+      {
+        question: '6. ¿Qué tipo de tejido conecta los músculos a los huesos?',
+        options: ['Tejido adiposo', 'Tejido epitelial', 'Tejido nervioso', 'Tejido conjuntivo'],
+        correctAnswer: 3,
+      },
+      {
+        question: '7. ¿Cuál es el órgano responsable de la producción de la insulina?',
+        options: ['Páncreas', 'Hígado', 'Riñón', 'Cerebro'],
+        correctAnswer: 0,
+      },
+      {
+        question: '8. ¿Cuál de los siguientes órganos pertenece al sistema respiratorio?',
+        options: ['Corazón', 'Pulmón', 'Hígado', 'Estómago'],
+        correctAnswer: 1,
+      },
+      {
+        question: '9. ¿Cuál de las siguientes afirmaciones sobre el ADN es correcta?',
+        options: ['Contiene información sobre las proteínas del cuerpo', 'Es producido en las células vegetales', 'Es un tipo de bacteria', 'Se encuentra en los ribosomas'],
+        correctAnswer: 0,
+      },
+      {
+        question: '10. ¿Cuál es el proceso de división celular que produce células sexuales (óvulos y espermatozoides)?',
+        options: ['Mitosis', 'Meiosis', 'Fotosíntesis', 'Respiración celular'],
+        correctAnswer: 1,
+      },
+    ];
+
+    const formContainer = document.getElementById('form-container');
+    const submitBtn = document.getElementById('submit-btn');
+    const resultElement = document.getElementById('result');
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function showQuestion() {
+      if (currentQuestionIndex < questions.length) {
+        const currentQuestion = questions[currentQuestionIndex];
+        formContainer.innerHTML = `
+          <div class="question">${currentQuestion.question}</div>
+          ${currentQuestion.options.map((option, index) => `
+            <div class="option">
+              <input type="radio" name="question-${currentQuestionIndex}" value="${index}">
+              <label>${option}</label>
+            </div>
+          `).join('')}
+        `;
+      } else {
+        showResult();
+        submitBtn.disabled = true;
+      }
+    }
+
+    function showResult() {
+      const percentage = (score / questions.length) * 100;
+      resultElement.textContent = `Tu calificación es: ${percentage.toFixed(2)}%`;
+    }
+
+    function handleAnswer() {
+      const selectedOption = document.querySelector(`input[name="question-${currentQuestionIndex}"]:checked`);
+
+      if (selectedOption) {
+        const selectedAnswer = parseInt(selectedOption.value);
+        const currentQuestion = questions[currentQuestionIndex];
+        
+        if (selectedAnswer === currentQuestion.correctAnswer) {
+          score++;
+        }
+
+        currentQuestionIndex++;
+        showQuestion();
+      }
+    }
+
+    submitBtn.addEventListener('click', handleAnswer);
+
+    showQuestion();
+  </script>
+</body>
+</html>
